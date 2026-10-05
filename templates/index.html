@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ScamShield AI - Enterprise Cyber Fraud Intelligence</title>
+
+    <!-- Google Fonts for High-Tech / Cybersecurity Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <!-- Ambient Cyber Glow Backdrop Elements -->
+    <div class="ambient-glow glow-cyan"></div>
+    <div class="ambient-glow glow-blue"></div>
+    <div class="cyber-grid-overlay"></div>
+
+    <div class="container">
+
+        <!-- Top Security Live Status Header -->
+        <div class="status-bar">
+            <div class="status-indicator">
+                <span class="live-dot"></span>
+                <span class="status-label">DEFENSE ENGINE: ACTIVE</span>
+            </div>
+            <div class="status-metric">
+                <span class="tech-tag">NEURAL CORE</span>
+                <span class="tech-tag">ZERO-TRUST SHIELD</span>
+            </div>
+        </div>
+
+        <!-- Main Header -->
+        <header>
+            <div class="shield-badge-container">
+                <div class="shield-hex-glow"></div>
+                <div class="shield-icon-wrapper">
+                    <svg class="shield-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        <path d="m9 12 2 2 4-4" stroke-width="2"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="brand-title">
+                <h1>ScamShield <span class="ai-pill">AI</span></h1>
+            </div>
+            <p class="brand-tagline">Autonomous Threat Intelligence & Real-Time Phishing Interceptor</p>
+        </header>
+
+        <main>
+
+            <!-- Threat Input Console -->
+            <section class="input-card glass-panel">
+
+                <div class="card-header">
+                    <div class="header-text">
+                        <div class="icon-title-row">
+                            <span class="terminal-prompt">$</span>
+                            <h2>Check a suspicious message</h2>
+                        </div>
+                        <span class="subtitle">Intercept and inspect suspicious SMS, WhatsApp messages, emails, or direct messages</span>
+                    </div>
+                    <div id="char-counter" class="char-counter">0 chars</div>
+                </div>
+
+                <!-- Input Mode Toggle -->
+                <div class="input-tabs">
+                    <button type="button" id="tab-text" class="tab-btn active" onclick="switchInputMode('text')">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                        Message Text
+                    </button>
+                    <button type="button" id="tab-screenshot" class="tab-btn" onclick="switchInputMode('screenshot')">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                        Screenshot OCR
+                    </button>
+                </div>
+
+                <!-- Text Mode Section -->
+                <div id="text-input-section">
+                    <!-- Quick Test Samples for Hackathon Demo -->
+                    <div class="sample-prompts">
+                        <span class="sample-label">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                            Test Vectors:
+                        </span>
+                        <button type="button" class="sample-btn" onclick="loadSample('phishing')">
+                            <span class="btn-dot dot-red"></span>🚨 Bank Phishing
+                        </button>
+                        <button type="button" class="sample-btn" onclick="loadSample('lottery')">
+                            <span class="btn-dot dot-amber"></span>🎁 Lottery Fraud
+                        </button>
+                        <button type="button" class="sample-btn" onclick="loadSample('crypto')">
+                            <span class="btn-dot dot-purple"></span>⚡ Crypto Scam
+                        </button>
+                        <button type="button" class="sample-btn" onclick="loadSample('safe')">
+                            <span class="btn-dot dot-green"></span>✅ Benign Message
+                        </button>
+                    </div>
+
+                    <!-- Message Input Area -->
+                    <div class="textarea-wrapper" id="textarea-wrapper">
+                        <div class="scanner-laser" id="scanner-laser"></div>
+                        <textarea
+                            id="message"
+                            placeholder="Paste suspicious SMS text, phishing link, urgent lottery message, or unsolicited email here to inspect threat vectors..."
+                            rows="5"
+                        ></textarea>
+                    </div>
+
+                    <!-- Action Toolbar -->
+                    <div class="button-group">
+                        <button id="analyze-btn" class="primary-btn glow-btn" onclick="analyzeMessage()">
+                            <span class="btn-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="11" cy="11" r="8"></circle>
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                </svg>
+                            </span>
+                            <span class="btn-text">Analyze Threat</span>
+                        </button>
+
+                        <button type="button" id="clear-btn" class="secondary-btn" onclick="clearInput()">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                            Clear
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Screenshot OCR Mode Section (starts hidden) -->
+                <div id="screenshot-input-section" class="hidden">
+                    <input type="file" id="screenshot-file-input" class="hidden" accept="image/png,image/jpeg,image/webp,image/gif" onchange="handleFileSelect(event)">
+                    
+                    <div id="screenshot-dropzone" class="screenshot-dropzone" onclick="triggerFilePicker()">
+                        <div class="dropzone-content" id="dropzone-prompt">
+                            <div class="dropzone-icon">
+                                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="17 8 12 3 7 8"></polyline>
+                                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                                </svg>
+                            </div>
+                            <p class="dropzone-title">Drop suspicious screenshot here or click to browse</p>
+                            <p class="dropzone-subtitle">Supports SMS, WhatsApp, Email screenshots • Paste directly with <strong>Cmd+V / Ctrl+V</strong></p>
+                            <span class="dropzone-privacy-note">🔒 Processed in-memory • Zero permanent image storage</span>
+                        </div>
+
+                        <!-- Image Preview Box (Shown once an image is selected) -->
+                        <div id="screenshot-preview-box" class="screenshot-preview-box hidden">
+                            <img id="screenshot-preview-img" src="" alt="Screenshot Preview" class="screenshot-thumbnail">
+                            <div class="preview-details">
+                                <span id="preview-filename" class="preview-filename">screenshot.png</span>
+                                <span id="preview-filesize" class="preview-filesize">0 KB</span>
+                            </div>
+                            <button type="button" class="remove-preview-btn" onclick="removeSelectedScreenshot(event)">✕</button>
+                        </div>
+                    </div>
+
+                    <!-- Screenshot Action Toolbar -->
+                    <div class="button-group">
+                        <button id="analyze-screenshot-btn" class="primary-btn glow-btn" onclick="analyzeScreenshot()">
+                            <span class="btn-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                    <polyline points="21 15 16 10 5 21"></polyline>
+                                </svg>
+                            </span>
+                            <span class="btn-text">Scan Screenshot</span>
+                        </button>
+
+                        <button type="button" class="secondary-btn" onclick="clearScreenshot()">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                            Clear
+                        </button>
+                    </div>
+                </div>
+
+            </section>
+
+
+            <!-- Analysis Result Dossier (starts hidden) -->
+            <section id="result" class="result-card glass-panel hidden">
+
+                <!-- Result Header Bar -->
+                <div class="result-header">
+                    <div class="report-meta">
+                        <span class="report-tag">THREAT INTELLIGENCE REPORT</span>
+                        <h2>Analysis Result</h2>
+                    </div>
+                    <span id="source-badge" class="badge">Rule-Based</span>
+                </div>
+
+                <!-- Threat Meter & Classification Showcase -->
+                <div class="threat-showcase">
+
+                    <!-- Circular Visual Score Gauge -->
+                    <div class="meter-wrapper">
+                        <div class="circular-meter">
+                            <svg class="meter-svg" viewBox="0 0 120 120">
+                                <circle class="meter-track" cx="60" cy="60" r="50"></circle>
+                                <circle id="meter-circle" class="meter-fill" cx="60" cy="60" r="50"></circle>
+                            </svg>
+                            <div class="meter-inner">
+                                <div class="score-display">
+                                    <span id="score">0</span>
+                                    <span class="score-denom">/100</span>
+                                </div>
+                                <span class="meter-caption">THREAT INDEX</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Risk Level & Category Intelligence -->
+                    <div class="threat-classification">
+                        <div class="classification-meta">
+                            <span class="meta-label">SEVERITY RATING</span>
+                            <div class="risk-pill-container">
+                                <div id="risk" class="risk-pill">Low Risk</div>
+                                <div id="category" class="category-pill">General Assessment</div>
+                            </div>
+                        </div>
+
+                        <!-- Linear Fallback/Gauge Bar for complete compatibility -->
+                        <div class="score-section">
+                            <div class="score-header">
+                                <span class="score-title">Threat Exposure Meter</span>
+                            </div>
+                            <div class="score-bar-bg">
+                                <div id="score-bar-fill" class="score-bar-fill"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Section: OCR Extracted Text (Active when screenshot analysis was performed) -->
+                <div id="ocr-extracted-section" class="intelligence-section hidden">
+                    <div class="section-title-row">
+                        <div class="section-icon icon-ocr">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                <polyline points="21 15 16 10 5 21"></polyline>
+                            </svg>
+                        </div>
+                        <h3>Extracted Screenshot Text (OCR)</h3>
+                        <span id="ocr-source-badge" class="ocr-badge">Vision OCR</span>
+                    </div>
+                    <div class="ocr-extracted-box">
+                        <pre id="ocr-extracted-text" class="ocr-extracted-pre"></pre>
+                    </div>
+                </div>
+
+                <!-- Section: Suspicious URL Threat Inspection (Active only when URLs are detected) -->
+                <div id="url-analysis-section" class="intelligence-section hidden">
+                    <div class="section-title-row">
+                        <div class="section-icon icon-url">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                            </svg>
+                        </div>
+                        <h3>Suspicious URL Threat Inspection</h3>
+                        <span id="url-count-badge" class="url-badge">Targets Scanned</span>
+                    </div>
+                    <div id="url-details-list" class="url-details-list"></div>
+                </div>
+
+                <!-- Section: Why is this message suspicious? -->
+                <div id="explanation-container" class="intelligence-section">
+                    <div class="section-title-row">
+                        <div class="section-icon icon-reason">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="16" x2="12" y2="12"></line>
+                                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                            </svg>
+                        </div>
+                        <h3>Why is this message suspicious?</h3>
+                    </div>
+                    <div class="explanation-box">
+                        <p id="explanation">Detailed neural threat analysis and social engineering evaluation will appear here.</p>
+                    </div>
+                </div>
+
+                <!-- Section: Detected Warning Signs -->
+                <div class="intelligence-section">
+                    <div class="section-title-row">
+                        <div class="section-icon icon-warning">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+                                <line x1="12" y1="9" x2="12" y2="13"></line>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+                        </div>
+                        <h3>Detected Threat Indicators</h3>
+                    </div>
+                    <!-- Preserves original ID 'detected' -->
+                    <ul id="detected" class="indicators-grid"></ul>
+                </div>
+
+                <!-- Section: Recommended Action -->
+                <div id="recommendations-container" class="intelligence-section">
+                    <div class="section-title-row">
+                        <div class="section-icon icon-action">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            </svg>
+                        </div>
+                        <h3>Recommended Action & Countermeasures</h3>
+                    </div>
+                    <!-- Preserves original ID 'recommendations' -->
+                    <ul id="recommendations" class="recommendations-list"></ul>
+                </div>
+
+            </section>
+
+            <!-- Session Threat Audit Log / Scan History -->
+            <section id="history-section" class="glass-panel history-panel">
+
+                <div class="history-header">
+                    <div class="history-title-row">
+                        <div class="section-icon icon-history">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                        </div>
+                        <div>
+                            <h2>Session Audit Log</h2>
+                            <span class="subtitle">Threat scans recorded during this browser session (click any item to re-inspect)</span>
+                        </div>
+                    </div>
+                    <div class="history-actions">
+                        <span id="history-counter-badge" class="history-badge">0 Scans</span>
+                        <button type="button" id="clear-history-btn" class="clear-history-btn" onclick="clearScanHistory()">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                            Clear History
+                        </button>
+                    </div>
+                </div>
+
+                <!-- History List Container -->
+                <div id="history-list" class="history-list"></div>
+
+                <!-- Empty State (Shown when history is empty) -->
+                <div id="history-empty" class="history-empty">
+                    <div class="empty-icon">🛡️</div>
+                    <p class="empty-title">No Scan Logs In This Session</p>
+                    <p class="empty-subtitle">Threat scans analyzed during your current session will appear here for one-click restoration and comparison.</p>
+                </div>
+
+            </section>
+
+        </main>
+
+        <!-- Modern Footer -->
+        <footer>
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="footer-dot"></span>
+                    <span>ScamShield AI • AI-Powered Fraud Prevention & Security Heuristics</span>
+                </div>
+                <div class="footer-tags">
+                    <span>CYBER INTELLIGENCE</span>
+                    <span>•</span>
+                    <span>ENTERPRISE GRADE</span>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>
