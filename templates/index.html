@@ -321,6 +321,44 @@
 
             </section>
 
+            <!-- Incident Response Copilot: deterministic, privacy-first guidance -->
+            <section id="incident-response-section" class="glass-panel incident-panel">
+                <div class="incident-heading">
+                    <div>
+                        <span class="incident-kicker">SCAMSHIELD RESPONSE COPILOT</span>
+                        <h2>Something already happened?</h2>
+                        <p class="subtitle">Get a clear next-step plan for the situation. You do not need to share account numbers or passwords.</p>
+                    </div>
+                    <span class="incident-shield" aria-hidden="true">✚</span>
+                </div>
+                <div class="incident-form">
+                    <label for="incident-scenario">Choose the closest situation</label>
+                    <select id="incident-scenario" class="incident-select">
+                        <option value="received">I only received a suspicious message</option>
+                        <option value="clicked">I clicked a link</option>
+                        <option value="shared_credentials">I shared a password, OTP, PIN, or banking detail</option>
+                        <option value="sent_money">I sent money or found an unauthorised transaction</option>
+                        <option value="installed_app">I installed an unfamiliar app or file</option>
+                        <option value="shared_screen">I shared my screen or allowed remote access</option>
+                    </select>
+                    <button type="button" id="response-plan-btn" class="primary-btn glow-btn" onclick="buildIncidentResponsePlan()">
+                        <span class="btn-text">Build my response plan</span>
+                    </button>
+                </div>
+                <div id="incident-response-result" class="incident-result hidden" aria-live="polite">
+                    <div class="incident-result-top">
+                        <div>
+                            <span class="incident-priority-label">PRIORITY</span>
+                            <h3 id="incident-response-title"></h3>
+                        </div>
+                        <span id="incident-response-priority" class="incident-priority"></span>
+                    </div>
+                    <ol id="incident-response-steps" class="incident-steps"></ol>
+                    <p id="incident-response-report" class="incident-report"></p>
+                    <p id="incident-response-privacy" class="incident-privacy"></p>
+                </div>
+            </section>
+
             <!-- Session Threat Audit Log / Scan History -->
             <section id="history-section" class="glass-panel history-panel">
 
