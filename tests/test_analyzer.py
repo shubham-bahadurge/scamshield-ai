@@ -389,3 +389,42 @@ def test_analyze_payload_contains_all_history_fields_and_no_secrets(client):
     assert "gemini_api_key" not in payload_str
     assert "secret" not in payload_str
 
+
+
+# ============================================================================
+# 7. Privacy-First Incident Response Copilot
+# ============================================================================
+def test_incident_response_received_scenario(client):
+    response = client.post("/incident-response", json={"scenario": "received"})
+    assert response.status_code == 200
+    data = response.get_json()
+    assert data["scenario"] == "received"
+    assert len(data["steps"]) >= 3
+    assert "not saved" in data["privacy"]
+
+
+def test_incident_response_money_loss_includes_official_india_channels(client):
+    response = client.post("/incident-response", json={"scenario": "sent_money"})
+    assert response.status_code == 200
+    data = response.get_json()
+    joined = " ".join(data["steps"]) + " " + data["report"]
+    assert "1930" in joined
+    assert "cybercrime.gov.in" in joined
+
+
+def test_incident_response_rejects_unknown_scenario(client):
+    response = client.post("/incident-response", json={"scenario": "give-me-admin-access"})
+    assert response.status_code == 400
+    assert "error" in response.get_json()
+
+
+def test_incident_response_rejects_non_json(client):
+    response = client.post("/incident-response", data="not json", content_type="text/plain")
+    assert response.status_code == 400
+
+
+def test_home_page_contains_incident_response_copilot(client):
+    response = client.get("/")
+    assert response.status_code == 200
+    assert b"SCAMSHIELD RESPONSE COPILOT" in response.data
+    assert b"incident-scenario" in response.data

@@ -4,6 +4,7 @@ from flask import Flask, jsonify, render_template, request
 
 from analyzer import ScamDetector
 from ocr_analyzer import OCRScanner
+from incident_response import build_response_plan
 
 # Load environment variables from .env file
 load_dotenv()
@@ -75,6 +76,25 @@ def analyze_screenshot():
         return jsonify({
             "error": "An internal error occurred while processing the screenshot."
         }), 500
+
+
+@app.route("/incident-response", methods=["POST"])
+def incident_response():
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict):
+        return jsonify({"error": "Invalid request. JSON payload expected."}), 400
+
+    scenario = data.get("scenario")
+    if not isinstance(scenario, str):
+        return jsonify({"error": "Choose what happened so we can prepare a response plan."}), 400
+
+    try:
+        return jsonify(build_response_plan(scenario)), 200
+    except ValueError as val_err:
+        return jsonify({"error": str(val_err)}), 400
+    except Exception:
+        app.logger.exception("Unexpected error while building incident response plan")
+        return jsonify({"error": "Unable to build the response plan right now."}), 500
 
 
 if __name__ == "__main__":
