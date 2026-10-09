@@ -774,3 +774,50 @@ function escapeHtml(text) {
     div.textContent = text;
     return div.innerHTML;
 }
+
+// ==========================================================================
+// PRIVACY-FIRST INCIDENT RESPONSE COPILOT
+// ==========================================================================
+async function buildIncidentResponsePlan() {
+    const scenarioInput = document.getElementById("incident-scenario");
+    const button = document.getElementById("response-plan-btn");
+    const result = document.getElementById("incident-response-result");
+    if (!scenarioInput || !button || !result) return;
+
+    const originalButton = button.innerHTML;
+    button.disabled = true;
+    button.innerHTML = '<span class="btn-text">Preparing safe next steps…</span>';
+
+    try {
+        const response = await fetch("/incident-response", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ scenario: scenarioInput.value })
+        });
+        const data = await response.json();
+        if (!response.ok || data.error) {
+            throw new Error(data.error || "Could not prepare a response plan.");
+        }
+
+        document.getElementById("incident-response-title").textContent = data.title;
+        document.getElementById("incident-response-priority").textContent = data.priority;
+        document.getElementById("incident-response-report").textContent = data.report;
+        document.getElementById("incident-response-privacy").textContent = data.privacy;
+
+        const stepsList = document.getElementById("incident-response-steps");
+        stepsList.replaceChildren();
+        (Array.isArray(data.steps) ? data.steps : []).forEach((step) => {
+            const item = document.createElement("li");
+            item.textContent = step;
+            stepsList.appendChild(item);
+        });
+        result.classList.remove("hidden");
+        result.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    } catch (error) {
+        console.error("Incident response plan error:", error);
+        alert(error.message || "Unable to prepare a response plan. Please try again.");
+    } finally {
+        button.disabled = false;
+        button.innerHTML = originalButton;
+    }
+}
