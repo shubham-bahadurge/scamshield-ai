@@ -10,12 +10,28 @@ from incident_response import build_response_plan
 load_dotenv()
 
 app = Flask(__name__)
+# Leave room for multipart form overhead while enforcing the OCR module's 10 MB image cap.
+app.config["MAX_CONTENT_LENGTH"] = 11 * 1024 * 1024
 
 # Initialize the scam detector (AI-powered with automatic rule-based fallback)
 detector = ScamDetector()
 
 # Initialize the in-memory screenshot OCR scanner
 ocr_scanner = OCRScanner(detector=detector)
+
+
+@app.route("/health", methods=["GET"])
+def health():
+    """Minimal deployment health check; never exposes secrets or their values."""
+    ai_configured = detector.ai_analyzer.is_available()
+    return jsonify({
+        "status": "ok",
+        "message_analysis": "available",
+        "url_analysis": "available",
+        "incident_response": "available",
+        "gemini_configured": ai_configured,
+        "screenshot_ocr": "gemini_or_local_fallback" if ai_configured else "requires_gemini_key_or_local_tesseract",
+    }), 200
 
 
 @app.route("/")
@@ -98,6 +114,7 @@ def incident_response():
 
 
 if __name__ == "__main__":
-    debug_mode = os.getenv("FLASK_DEBUG", "True").strip().lower() in ("true", "1", "t")
+    # Debug mode is opt-in; never enable Flask's debugger by default.
+    debug_mode = os.getenv("FLASK_DEBUG", "False").strip().lower() in ("true", "1", "t")
     port = int(os.getenv("PORT", "5000"))
     app.run(debug=debug_mode, port=port)
