@@ -21,6 +21,7 @@ def test_documented_gemini_environment_variable_takes_precedence(monkeypatch):
 
 def test_health_endpoint_does_not_expose_secret(monkeypatch):
     monkeypatch.setenv("GEMINI_API_KEY", "do-not-leak-this")
+    monkeypatch.setattr("app.detector.ai_analyzer", AIScamAnalyzer())
     app.config["TESTING"] = True
     with app.test_client() as client:
         response = client.get("/health")
@@ -34,6 +35,7 @@ def test_health_endpoint_does_not_expose_secret(monkeypatch):
 def test_health_endpoint_works_without_gemini_key(monkeypatch):
     monkeypatch.delenv("GEMINI_API_KEY", raising=False)
     monkeypatch.delenv("shubham12", raising=False)
+    monkeypatch.setattr("app.detector.ai_analyzer", AIScamAnalyzer())
     app.config["TESTING"] = True
     with app.test_client() as client:
         response = client.get("/health")
