@@ -171,7 +171,11 @@ class AIScamAnalyzer:
         timeout_seconds: float = 8.0,
     ) -> None:
         self._explicit_key = api_key is not None
-        self.api_key = api_key.strip() if api_key is not None else (os.getenv("GEMINI_API_KEY", "")).strip()
+        # Backward compatibility: an earlier Vercel setup stored the key under
+        # the variable name "shubham12". Prefer the documented name first.
+        self.api_key = api_key.strip() if api_key is not None else (
+            os.getenv("GEMINI_API_KEY") or os.getenv("shubham12") or ""
+        ).strip()
         self.model_name = (
             model_name or os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
         ).strip()
@@ -181,13 +185,13 @@ class AIScamAnalyzer:
     def is_available(self) -> bool:
         """Check if an API key is present."""
         if not self._explicit_key and not self.api_key:
-            self.api_key = (os.getenv("GEMINI_API_KEY") or "").strip()
+            self.api_key = (os.getenv("GEMINI_API_KEY") or os.getenv("shubham12") or "").strip()
         return bool(self.api_key and self.api_key != "your_gemini_api_key_here")
 
     def _get_client(self):
         """Lazy-initialize the Google GenAI client."""
         if not self.api_key:
-            self.api_key = (os.getenv("GEMINI_API_KEY") or "").strip()
+            self.api_key = (os.getenv("GEMINI_API_KEY") or os.getenv("shubham12") or "").strip()
         if self._client is None and self.is_available():
             try:
                 from google import genai
